@@ -1,3 +1,9 @@
+# express-restify-mt-mongoose
+This is fork of express-restify-mongoose module. 
+This module adds multitenant capability to express-restify-mongoose. 
+
+[![NPM version](https://badge.fury.io/js/express-restify-mt-mongoose.png)](http://badge.fury.io/js/express-restify-mongoose)
+
 # express-restify-mongoose
 
 Easily create a flexible REST interface for mongoose models.
