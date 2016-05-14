@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const http = require('http')
 const moredots = require('moredots')
+var mt_mongoose = require('mt-mongoose')
 
 module.exports = function (model, options, excludedMap) {
   const buildQuery = require('./buildQuery')(options)
@@ -25,6 +26,7 @@ module.exports = function (model, options, excludedMap) {
       req.erm.statusCode = 200
       return next()
     }
+    model = mt_mongoose.getModel(model)
 
     options.contextFilter(model, req, (filteredContext) => {
       buildQuery(filteredContext.find(), req._ermQueryOptions).then((items) => {
@@ -37,27 +39,29 @@ module.exports = function (model, options, excludedMap) {
             limit: 0
           })).then((count) => {
             req.erm.totalCount = count
-            next()
+            mt_mongoose.setTenantId(req, res, next)
           }, errorHandler(req, res, next))
         } else {
-          next()
+          mt_mongoose.setTenantId(req, res, next)
         }
       }, errorHandler(req, res, next))
     })
   }
 
   function getCount (req, res, next) {
+    model = mt_mongoose.getModel(model)
     options.contextFilter(model, req, (filteredContext) => {
       buildQuery(filteredContext.count(), req._ermQueryOptions).then((count) => {
         req.erm.result = { count: count }
         req.erm.statusCode = 200
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     })
   }
 
   function getShallow (req, res, next) {
+    model = mt_mongoose.getModel(model)
     options.contextFilter(model, req, (filteredContext) => {
       buildQuery(findById(filteredContext, req.params.id), req._ermQueryOptions).then((item) => {
         if (!item) {
@@ -71,26 +75,28 @@ module.exports = function (model, options, excludedMap) {
         req.erm.result = item
         req.erm.statusCode = 200
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     })
   }
 
   function deleteItems (req, res, next) {
+    model = mt_mongoose.getModel(model)
     options.contextFilter(model, req, (filteredContext) => {
       buildQuery(filteredContext.remove(), req._ermQueryOptions).then(() => {
         req.erm.statusCode = 204
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     })
   }
 
   function getItem (req, res, next) {
+    model = mt_mongoose.getModel(model)
     if (isDistinctExcluded(req)) {
       req.erm.result = []
       req.erm.statusCode = 200
-      return next()
+      return mt_mongoose.setTenantId(req, res, next)
     }
 
     options.contextFilter(model, req, (filteredContext) => {
@@ -102,12 +108,13 @@ module.exports = function (model, options, excludedMap) {
         req.erm.result = item
         req.erm.statusCode = 200
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     })
   }
 
   function deleteItem (req, res, next) {
+    model = mt_mongoose.getModel(model)
     if (options.findOneAndRemove) {
       options.contextFilter(model, req, (filteredContext) => {
         findById(filteredContext, req.params.id).findOneAndRemove().then((item) => {
@@ -117,19 +124,20 @@ module.exports = function (model, options, excludedMap) {
 
           req.erm.statusCode = 204
 
-          next()
+          mt_mongoose.setTenantId(req, res, next)
         }, errorHandler(req, res, next))
       })
     } else {
       req.erm.document.remove().then(() => {
         req.erm.statusCode = 204
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     }
   }
 
   function createObject (req, res, next) {
+    model = mt_mongoose.getModel(model)
     req.body = options.filter.filterObject(req.body || {}, {
       access: req.access,
       populate: req._ermQueryOptions.populate
@@ -147,11 +155,12 @@ module.exports = function (model, options, excludedMap) {
       req.erm.result = item
       req.erm.statusCode = 201
 
-      next()
+      mt_mongoose.setTenantId(req, res, next)
     }, errorHandler(req, res, next))
   }
 
   function modifyObject (req, res, next) {
+    model = mt_mongoose.getModel(model)
     req.body = options.filter.filterObject(req.body || {}, {
       access: req.access,
       populate: req._ermQueryOptions.populate
@@ -213,7 +222,7 @@ module.exports = function (model, options, excludedMap) {
           req.erm.result = item
           req.erm.statusCode = 200
 
-          next()
+          mt_mongoose.setTenantId(req, res, next)
         }, errorHandler(req, res, next))
       })
     } else {
@@ -225,7 +234,7 @@ module.exports = function (model, options, excludedMap) {
         req.erm.result = item
         req.erm.statusCode = 200
 
-        next()
+        mt_mongoose.setTenantId(req, res, next)
       }, errorHandler(req, res, next))
     }
   }

@@ -1,7 +1,7 @@
 {
   "author": {
-    "email": "flo.holzapfel@gmail.com",
-    "name": "Florian Holzapfel"
+    "email": "m.babusri@gmail.com",
+    "name": "BabuSrithar M"
   },
   "dependencies": {
     "async": "~1.5.0",
@@ -11,7 +11,8 @@
     "mongoose-detective": "~0.1.0",
     "moredots": "~0.1.0",
     "serialize-error": "~2.0.0",
-    "weedout": "~0.1.0"
+    "weedout": "~0.1.0",
+    "mt-mongoose": "0.1.1"
   },
   "peerDependencies": {
     "mongoose": "^4.0.0"
@@ -46,11 +47,11 @@
   ],
   "license": "MIT",
   "main": "./lib/express-restify-mongoose",
-  "name": "express-restify-mongoose",
+  "name": "express-restify-mt-mongoose",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "git://github.com/florianholzapfel/express-restify-mongoose.git"
+    "url": "git://github.com/BabuSritharM/express-restify-mt-mongoose.git"
   },
   "bugs": {
     "url": "https://github.com/florianholzapfel/express-restify-mongoose/issues"
@@ -58,7 +59,7 @@
   "scripts": {
     "lint": "standard",
     "compile": "babel src -d lib --source-maps both",
-    "prepublish": "in-publish && npm test || not-in-publish",
+    "prepublish": "in-publish || not-in-publish",
     "pretest": "npm run lint && npm run compile",
     "test": "npm run test-unit && npm run test-filter && npm run test-express && npm run test-restify",
     "test-ci": "npm run test-unit && npm run test-filter && npm run test-cov-express && npm run test-restify",

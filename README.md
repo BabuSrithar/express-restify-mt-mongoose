@@ -2,7 +2,7 @@
 This is fork of express-restify-mongoose module. 
 This module adds multitenant capability to express-restify-mongoose. 
 
-[![NPM version](https://badge.fury.io/js/express-restify-mt-mongoose.png)](http://badge.fury.io/js/express-restify-mongoose)
+[![NPM version](https://badge.fury.io/js/express-restify-mt-mongoose.png)](http://badge.fury.io/js/express-restify-mt-mongoose)
 
 # express-restify-mongoose
 
