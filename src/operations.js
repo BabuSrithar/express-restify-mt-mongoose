@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const http = require('http')
 const moredots = require('moredots')
-var mt_mongoose = require('mt-mongoose')
+var mt_mongoose = require.main.require('mt-mongoose')
 
 module.exports = function (model, options, excludedMap) {
   const buildQuery = require('./buildQuery')(options)
